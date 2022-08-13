@@ -3,25 +3,25 @@
   "version": "0.1.0",
   "description": "SignalK node server plugin reading roll, pitch and magnetic heading from WITMOTION's HWT910B sensor",
   "main": "index.js",
-  "keywords": ["signalk-node-server-plugin",
-    "signalk-category-hardware"
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk-category-hardware",
+    "HWT901B-232"
   ],
-  "author": {
-      "name": "M. Satzinger",
-      "email": "w.geronius@web.de"
-  },
+  "author": "M. Satzinger <w.geronius@web.de>",
   "license": "Apache-2.0",
   "dependencies": {
     "serialport": "^9.2.0"
   },
-    "repository": {
+  "repository": {
     "type": "git",
-    "url": "https://github.com/W-Geronius/signalk-hwt901b-imu"
+    "url": "git+https://github.com/W-Geronius/signalk-hwt901b-imu.git"
   },
-  	"bugs": {
-		"url": "https://W-Geronius/signalk-hwt901b-imu/issues"
-	},
-  "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+  "bugs": {
+    "url": "https://W-Geronius/signalk-hwt901b-imu/issues"
+  },
+  "homepage": "https://github.com/W-Geronius/signalk-hwt901b-imu#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
