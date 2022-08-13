@@ -22,7 +22,7 @@ z axis value (yaw) plus an offset determined after calibration and install
 ## PROCESSING:
 - No commands are currently sent to the device by this plugin 
 - Calibration, as well as other settings like freqency, transmission speed, output filter etc. have to be setup via wit motion windows software prior to final placement onboard
-- To compensate the lack of interactively levelling and setting heading (z axis), offset values must be entered in SK plugin configuration screen. These offset values may be determined by inspecting the plugin's debug output
+- To compensate the lack of interactively levelling and setting heading (z axis) offset values must be entered in SK plugin configuration screen. These offset values may be determined by inspecting the plugin's debug output
 
 
 ## OUTPUT TO SIGNALK (in rad):
@@ -31,10 +31,10 @@ z axis value (yaw) plus an offset determined after calibration and install
 {"updates":[{"$source":"WIT.n",
              "values":
                [{"path": "navigation.headingMagnetic",
-                         "value":z.zzzzzz},
+                         "value":123.456},
                 {"path": "navigation.attitude",
-                         "value":{"roll":y.yyyyyy,
-                         "pitch":x.xxxxxx,
+                         "value":{"roll":0.123456,
+                         "pitch":-0.123456,
                          "yaw":null}}
                 ]
             }]
