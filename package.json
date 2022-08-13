@@ -20,6 +20,8 @@
   },
   	"bugs": {
 		"url": "https://W-Geronius/signalk-hwt901b-imu/issues"
-	}
-
+	},
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  }
 }
