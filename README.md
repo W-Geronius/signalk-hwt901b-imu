@@ -20,7 +20,9 @@ z axis value (yaw) plus an offset determined after calibration and install
 
 #### PROCESSING:
 - Gyroscope has to be calibrated by wit motion windows software prior to final placement onboard
-- acceleration calibration, as well as levelling pitch & roll can be accomplished via the plugin's settings
+- acceleration calibration, as well as levelling pitch & roll can be accomplished via the plugin's settings:
+
+![image](https://user-images.githubusercontent.com/18160302/184508872-12e1ac4a-4126-4b6c-8608-5f2ab67f3f2c.png)
 
 #### OUTPUT TO SIGNALK (in rad):
 
