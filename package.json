@@ -1,0 +1,25 @@
+{
+  "name": "signalk-hwt901b-imu",
+  "version": "0.0.3",
+  "description": "SignalK node server plugin reading roll, pitch and course from WITMOTION's HWT910B sensor",
+  "main": "index.js",
+  "keywords": ["signalk-node-server-plugin",
+    "signalk-category-hardware"
+  ],
+  "author": {
+      "name": "M. Satzinger",
+      "email": "w.geronius@web.de",
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "serialport": "^9.2.0"
+  },
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/W-Geronius/signalk-hwt901b-imu"
+  },
+  	"bugs": {
+		"url": "https://W-Geronius/signalk-hwt901b-imu/issues"
+	}
+
+}
