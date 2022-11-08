@@ -188,19 +188,15 @@ module.exports = function (app) {
         }
     }
 
-    function parseDataTest(zOffset, data, index) {
-
-        app.debug('dataTest', data)
-    }
-
     function parseData(zOffset, data, index) {
-
-        app.debug('data', data)
 
         const decodeWit = 0.0054931640625   // (180.00 / 32768)
         const factRad = 0.0174532925199     // * pi/180
-        // app.debug('parsed Data:', data)
-        if (checkWitData(data)) {
+
+        app.debug('parsed Data:', data)
+
+        if (checkWitData(data)) { // TODO: refactoring check data (NOW always true)
+
             var pitch = toRad(data.readUInt16LE(0))
             var roll = toRad(data.readUInt16LE(2))
             var hdm = (360.00 - data.readUInt16LE(4) * decodeWit + zOffset);
