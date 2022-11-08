@@ -137,7 +137,7 @@ module.exports = function (app) {
 
         // set data set unconditionally
         setTimeout(() => {
-            sendCommand(new Uint8Array([0xFF, 0xAA, 0x02, 0x08, 0x00]))
+            sendCommand(new Uint8Array([0xFF, 0xAA, 0x02, 0x48, 0x00]))
             setTimeout(() => {
                 saveConfig("data set")
             }, 200)
@@ -188,7 +188,15 @@ module.exports = function (app) {
         }
     }
 
+    function parseDataTest(zOffset, data, index) {
+
+        app.debug('dataTest', data)
+    }
+
     function parseData(zOffset, data, index) {
+
+        app.debug('data', data)
+
         const decodeWit = 0.0054931640625   // (180.00 / 32768)
         const factRad = 0.0174532925199     // * pi/180
         // app.debug('parsed Data:', data)
@@ -197,15 +205,33 @@ module.exports = function (app) {
             var roll = toRad(data.readUInt16LE(2))
             var hdm = (360.00 - data.readUInt16LE(4) * decodeWit + zOffset);
             (hdm > 360) ? hdm = (hdm - 360) * factRad : hdm *= factRad
+
+            var pressure = data[14].toString(16).concat(data[13].toString(16)).concat(data[12].toString(16)).concat(data[11].toString(16))
+            pressure = (parseInt(pressure, 16)/100)
+
+            var altitude = data[18].toString(16).concat(data[17].toString(16)).concat(data[16].toString(16)).concat(data[15].toString(16))
+            altitude = (parseInt(altitude, 16)/100)
+
             app.debug('° roll:', (roll / factRad).toFixed(6),
                 '° pitch', (pitch / factRad).toFixed(6),
-                '° heading:', (hdm / factRad).toFixed(6))
+                '° heading:', (hdm / factRad).toFixed(6),
+                '(hPa) Pressure:', pressure.toFixed(2),
+                '(m) Altitude:', altitude.toFixed(2),
+            )
 
             //  send to SK
             app.handleMessage(plugin.id, {
                 updates: [{
                     '$source': 'WIT.' + (index + 1).toString(),
                     values: [
+                        {
+                            path: 'navigation.pressure',
+                            value: pressure
+                        },
+                        {
+                            path: 'navigation.altitude',
+                            value: altitude
+                        },
                         {
                             path: 'navigation.headingMagnetic',
                             value: hdm
@@ -237,6 +263,7 @@ module.exports = function (app) {
                 if (data.readUInt8(8) == checksum % 256) { return true }
             }
 
+            return true;
         }
 
         return false
