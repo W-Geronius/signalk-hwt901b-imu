@@ -110,7 +110,8 @@ module.exports = function (app) {
 
             serial.on('close', function () {
                 app.debug("plugin.connect.close")
-                // scheduleReconnect(device, index)
+                // causes locked port when submitting changes to plugin settings
+                // scheduleReconnect(device, index)      
             })
         }
         catch (err) {
@@ -123,17 +124,23 @@ module.exports = function (app) {
     function configureDevice(device, index) {
 
         const cmdUnlock = new Uint8Array([0xFF, 0xAA, 0x69, 0x88, 0xB5])
-
         var cmdFreq = new Uint8Array([0xFF, 0xAA, 0x03, 0x00, 0x00])
-        cmdFreq[3] = freqs.indexOf(device.freq) + 1
-
         // set frequency unconditionally
+        cmdFreq[3] = freqs.indexOf(device.freq) + 1
         setTimeout(() => {
             sendCommand(cmdFreq)
             setTimeout(() => {
                 saveConfig("frequency")
             }, 200)
         }, 10000)
+
+        // adjust acceleration filter parameter (200 instead of default 500)
+        setTimeout(() => {
+            sendCommand(new Uint8Array([0xFF, 0xAA, 0x2A, 0xC8, 0x00]))
+            setTimeout(() => {
+                saveConfig("acceleration filter parameter")
+            }, 200)
+        }, 12000)
 
         // set data set unconditionally
         setTimeout(() => {
@@ -160,7 +167,6 @@ module.exports = function (app) {
         }
 
         // reset angles if requested by plugin.options
-
         if (device.angleRef) {
             setTimeout(() => {
                 app.debug('resetting x/y ...')
@@ -196,10 +202,14 @@ module.exports = function (app) {
             var pitch = toRad(data.readUInt16LE(0))
             var roll = toRad(data.readUInt16LE(2))
             var hdm = (360.00 - data.readUInt16LE(4) * decodeWit + zOffset);
+            app.debug('WIT ° heading: ', ((360.00 - data.readUInt16LE(4) * decodeWit)).toFixed(3),
+                      'adjust zOffset: ', (zOffset).toFixed (2));
             (hdm > 360) ? hdm = (hdm - 360) * factRad : hdm *= factRad
-            app.debug('° roll:', (roll / factRad).toFixed(6),
+            app.debug(
+                '° roll:', (roll / factRad).toFixed(6),
                 '° pitch', (pitch / factRad).toFixed(6),
-                '° heading:', (hdm / factRad).toFixed(6))
+                '° heading:', (hdm / factRad).toFixed(6)
+            )
 
             //  send to SK
             app.handleMessage(plugin.id, {
@@ -236,10 +246,8 @@ module.exports = function (app) {
                 for (i = 0; i < 8; i++) { checksum += data.readUInt8(i) }
                 if (data.readUInt8(8) == checksum % 256) { return true }
             }
-
+            return false
         }
-
-        return false
     }
 
     function scheduleReconnect(device, index) {
