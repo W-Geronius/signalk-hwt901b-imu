@@ -1,6 +1,6 @@
 const PLUGIN_ID = 'signalk-hwt901b-imu';
 const SerialPort = require('serialport')
-const DelimiterParser = require('@serialport/parser-delimiter')
+const { DelimiterParser } = require('@serialport/parser-delimiter')
 
 const freqs = ["0.2Hz", "0.5Hz", "1Hz", "2Hz", "5Hz", "10Hz", "20Hz", "50Hz"]
 
